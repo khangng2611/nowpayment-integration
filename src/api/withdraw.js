@@ -128,7 +128,26 @@ const payout_status = async (api_key, withdral_id, auth_token) => {
     }
 }
 
-export {min_withdraw_amount, validate_payout_address, write_off, create_payout, verify_payout, payout_status}
+// get transfer status (write off status)
+const transfer_status = async (api_key, transfer_id, auth_token) => { 
+    try {
+        let response = await axios({
+            method: 'get',
+            url: `${API_HOST}/v1/sub-partner/transfer/${transfer_id}`,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${auth_token}`,
+                'x-api-key' : api_key,
+            }
+        });
+        return response.data;
+    } catch (error) {  
+        throw error.response.data; 
+    }
+}
+
+
+export {min_withdraw_amount, validate_payout_address, write_off, create_payout, verify_payout, payout_status, transfer_status}
 
 // try {
 //     // const result = await deposit_payment('eth', 0.1, "1729540906");
